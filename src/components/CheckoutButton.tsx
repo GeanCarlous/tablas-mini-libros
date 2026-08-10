@@ -35,13 +35,23 @@ export function CheckoutButton({
 
   const checkout = useMutation({
     mutationFn: async (payload: CheckoutPayload) => {
-      // Dispara o evento para a Meta
+      const params = new URLSearchParams(window.location.search);
+
+      const utmData = {
+        utm_source: params.get("utm_source") ?? undefined,
+        utm_medium: params.get("utm_medium") ?? undefined,
+        utm_campaign: params.get("utm_campaign") ?? undefined,
+        utm_content: params.get("utm_content") ?? undefined,
+        utm_term: params.get("utm_term") ?? undefined,
+      };
+
       initiateCheckout();
 
-      // Continua normalmente para criar a sessão da Stripe
-      return createCheckoutSession(payload);
+      return createCheckoutSession({
+        ...payload,
+        ...utmData,
+      });
     },
-
     onSuccess: (url) => {
       window.location.assign(url);
     },

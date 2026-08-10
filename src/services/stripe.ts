@@ -6,7 +6,12 @@ export const stripePromise = stripePublicKey ? loadStripe(stripePublicKey) : nul
 
 export const checkoutPayloadSchema = z.object({
   productId: z.string().min(1),
-  quantity: z.literal(1)
+  quantity: z.literal(1),
+  utm_source: z.string().optional(),
+  utm_medium: z.string().optional(),
+  utm_campaign: z.string().optional(),
+  utm_content: z.string().optional(),
+  utm_term: z.string().optional(),
 });
 
 const checkoutSessionSchema = z.object({
