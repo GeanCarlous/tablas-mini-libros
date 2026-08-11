@@ -1,6 +1,6 @@
 import ReactPixel from "react-facebook-pixel";
 
-const PIXEL_ID = "1539314521271272";
+const PIXEL_ID = import.meta.env.VITE_META_PIXEL_ID;
 
 let initialized = false;
 
