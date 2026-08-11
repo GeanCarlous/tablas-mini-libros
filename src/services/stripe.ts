@@ -12,6 +12,11 @@ export const checkoutPayloadSchema = z.object({
   utm_campaign: z.string().optional(),
   utm_content: z.string().optional(),
   utm_term: z.string().optional(),
+
+
+  fbp: z.string().optional(),
+  fbc: z.string().optional(),
+  user_agent: z.string().optional(),
 });
 
 const checkoutSessionSchema = z.object({

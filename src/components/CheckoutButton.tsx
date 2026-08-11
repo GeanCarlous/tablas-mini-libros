@@ -37,6 +37,17 @@ export function CheckoutButton({
     mutationFn: async (payload: CheckoutPayload) => {
       const params = new URLSearchParams(window.location.search);
 
+      const getCookie = (name: string) => {
+        const value = document.cookie
+          .split("; ")
+          .find((row) => row.startsWith(`${name}=`))
+          ?.split("=")
+          .slice(1)
+          .join("=");
+
+        return value ? decodeURIComponent(value) : undefined;
+      };
+
       const utmData = {
         utm_source: params.get("utm_source") ?? undefined,
         utm_medium: params.get("utm_medium") ?? undefined,
@@ -45,13 +56,31 @@ export function CheckoutButton({
         utm_term: params.get("utm_term") ?? undefined,
       };
 
+      let fbp = getCookie("_fbp");
+      let fbc = getCookie("_fbc");
+
+      // Se o Meta não criou _fbc ainda, cria a partir do fbclid
+      const fbclid = params.get("fbclid");
+
+      if (!fbc && fbclid) {
+        fbc = `fb.1.${Date.now()}.${fbclid}`;
+      }
+
+      const trackingData = {
+        ...utmData,
+        fbp,
+        fbc,
+        user_agent: navigator.userAgent,
+      };
+
       initiateCheckout();
 
       return createCheckoutSession({
         ...payload,
-        ...utmData,
+        ...trackingData,
       });
     },
+
     onSuccess: (url) => {
       window.location.assign(url);
     },

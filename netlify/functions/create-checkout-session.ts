@@ -10,6 +10,11 @@ const payloadSchema = z.object({
   utm_campaign: z.string().optional(),
   utm_content: z.string().optional(),
   utm_term: z.string().optional(),
+
+
+  fbp: z.string().optional(),
+  fbc: z.string().optional(),
+  user_agent: z.string().optional(),
 });
 
 const stripeSecretKey = process.env.STRIPE_SECRET_KEY;
@@ -50,6 +55,11 @@ export const handler = async (event: any) => {
         utm_campaign: payload.utm_campaign || "",
         utm_content: payload.utm_content || "",
         utm_term: payload.utm_term || "",
+
+
+        fbp: payload.fbp || "",
+        fbc: payload.fbc || "",
+        user_agent: payload.user_agent || "",
       },
 
       success_url: `${appUrl}/success?session_id={CHECKOUT_SESSION_ID}`,
